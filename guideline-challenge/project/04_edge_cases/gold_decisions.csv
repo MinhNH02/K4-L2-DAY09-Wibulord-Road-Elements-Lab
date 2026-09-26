@@ -1,1 +1,18 @@
 sample_id,decision_id,expected,severity,rationale
+BDD21,d1,label=traffic_light đầu đèn trên cần treo phía trước (x≈332–341 y≈282–307): state=green pictogram=circle lamp_only=false,major,Thấy vỏ; bóng dưới cùng sáng xanh (mục 4.1 quy tắc vị trí); vỏ cao ~25 px ≥ 8 px (mục 1)
+BDD21,d2,relevance=relevant cho đầu đèn trên cần treo phía trước (x≈332–341 y≈282–307),critical,R4: đèn tròn của giao lộ gần nhất quay mặt về xe mình; gán not_relevant hoặc bỏ sót là lỗi critical (mục 10)
+BDD21,d3,geometry: box ôm vỏ đầu đèn trên cần treo x≈332–341 y≈282–307 (mỗi cạnh ±3 px); không lấy cần treo và giá gắn phía trên,minor,Mục 3: box ôm sát vỏ nhìn thấy gồm visor; không gồm cần treo; tolerance 3 px
+BDD21,d4,IGNORE: không có box ở 2 vỏ đèn sơn vàng bên trái (x≈56–86 y≈336–352),major,"Chỉ thấy mặt vỏ vàng được nắng chiếu, không thấy bóng tròn/mũi tên trong mặt vỏ → không thấy mặt đèn (định nghĩa đầu file + mục 5); không escalate"
+BDD02,d1,label=traffic_light đầu đèn trên cần treo giữa giao lộ (x≈787–796 y≈128–155): state=green pictogram=circle relevance=relevant,critical,R4: đèn tròn của giao lộ gần nhất (ngay sau vạch người đi bộ) quay về xe mình; bỏ sót hoặc not_relevant là lỗi critical
+BDD02,d2,label=traffic_light đầu đèn xa cuối đại lộ (x≈578–590 y≈238–254): state=green relevance=not_relevant,major,R1: thuộc giao lộ xa hơn giao lộ gần nhất; vỏ vàng cao ~12 px ≥ 8 px nên vẫn phải vẽ (mục 1)
+BDD02,d3,IGNORE: không có box ở vỏ đèn vàng quay ngang góc trên phải (x≈1228–1252 y≈20–70),major,"Chỉ thấy cạnh vỏ và visor nhìn từ bên hông, không thấy bóng → đèn quay ngang (mục 5); không escalate"
+BDD02,d4,geometry: box ôm vỏ đầu đèn trên cần treo giữa x≈787–796 y≈128–155 (mỗi cạnh ±3 px); lamp_only=false,minor,"Mục 3: thấy vỏ thì box theo vỏ, không lấy cần treo và biển tên đường bên phải"
+BDD11,d1,IGNORE: không có box ở đèn người đi bộ bàn tay đỏ + hình người bên phải (x≈1197–1266 y≈246–273),major,Mục 5: đèn cho người đi bộ nằm ngoài scope dù cùng màu đỏ
+BDD11,d2,Ảnh có 0 box traffic_light (kể cả biển vàng ở xa x≈730–740 y≈312–330),major,Không có đầu đèn cho xe cơ giới nào thấy mặt đèn; biển báo màu vàng là IGNORE (mục 5); ảnh không có đèn là hợp lệ (ví dụ BDD16)
+BDD26,d1,label=traffic_light đèn xanh gần phía trên trái (vùng sáng x≈474–501 y≈56–89): state=green pictogram=circle relevance=relevant,critical,Mục 6.1: trên cột ở góc giao lộ gần nhất + xanh thuần → là đèn giao thông; R4; bỏ sót đèn relevant ban đêm là lỗi critical
+BDD26,d2,lamp_only=true và escalate=false cho đèn xanh gần (x≈474–501 y≈56–89),major,"Ban đêm không thấy vỏ → box ôm vùng sáng có màu, không ôm quầng xanh lan rộng; ca đã có rule nên không escalate (mục 6 + 6.1)"
+BDD26,d3,IGNORE: không có box ở đèn bàn tay cam ngay dưới đèn xanh (x≈432–446 y≈106–132),major,Mục 5: đèn người đi bộ hình bàn tay; không phải đèn cho xe dù màu đỏ cam
+BDD26,d4,Không có box nào vừa state=red vừa relevance=relevant,critical,Đèn đỏ duy nhất cho xe nằm ở giao lộ xa hơn cuối đường (x≈660–675 y≈210–225) → R1 not_relevant; đèn bàn tay cam là IGNORE; gán đỏ relevant mâu thuẫn đèn xanh gần và làm xe dừng sai
+BDD17,d1,escalate=false cho mọi box trong ảnh,major,"Mờ do mưa trên kính là lỗi của ảnh → UNKNOWN (state/relevance=unknown), không phải ESCALATE (mục 7, mục 10)"
+BDD17,d2,"Đèn đỏ cam bị nhoè bên trái (x≈395–440 y≈180–220) nếu vẽ thì lamp_only=true và state ∈ {red, unknown}; không gán yellow hoặc green",major,"Không thấy vỏ nên không dùng quy tắc vị trí; đỏ cam không phân biệt được với vàng thì unknown (mục 4.1, 6.1)"
+BDD17,d3,IGNORE: không có box ở biển vàng hình người đi bộ bên phải (x≈818–846 y≈115–155),minor,Mục 5: biển báo màu vàng không phải đèn giao thông
