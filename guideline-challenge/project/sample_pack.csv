@@ -1,1 +1,16 @@
 sample_id,split,tags,reason
+LISA01,example,normal;conflict,Ví dụ mục 9: mũi tên trái đỏ not_relevant cạnh đèn tròn đỏ relevant; đèn nhắc lại ở góc xa; vỏ tối chỉ thấy chấm đỏ thì không vẽ
+LISA20,example,conflict,Ví dụ mục 9: cùng giao lộ; mũi tên trái vẫn đỏ còn các đèn tròn đã xanh (trông xanh ngọc) — rule R3/R4 và quy tắc màu
+BDD16,example,negative,Ví dụ mục 9: dưới cầu vượt có đèn trần; đèn hậu; phản chiếu trên capo; biển cam — không có box nào
+LISA08,calibration,normal;small_far,Tất cả đầu đèn đỏ; thử quy tắc vị trí (đỏ trông cam) và việc vẽ đủ 2 đèn nhỏ ở góc xa
+LISA16,calibration,conflict;edge,Frame đầu tiên đèn tròn chuyển xanh trong khi mũi tên trái vẫn đỏ; thử R3 và rule mỗi ảnh độc lập
+BDD07,calibration,edge;small_far,Giao lộ nhiều đầu đèn vỏ vàng: hai cặp đầu đèn trên cần treo; đèn xa phía sau; vỏ quay ngang bên phải — thử 1 vỏ = 1 box và IGNORE đèn quay ngang
+BDD12,calibration,negative;edge,Ban ngày; chỉ có đèn người đi bộ hình bàn tay đỏ bên phải — thử IGNORE đèn đi bộ
+BDD18,calibration,low_visibility;negative;small_far,Ban đêm; đèn người đi bộ đỏ/trắng sát bên phải; đèn xanh rất nhỏ ở cuối đường — thử ngưỡng 8 px và IGNORE đèn đi bộ ban đêm
+BDD25,calibration,low_visibility;small_far,Chạng vạng; đường ướt; nhiều đầu đèn xanh ở xa và phản chiếu trên mặt đường — thử box theo vỏ không theo quầng sáng và IGNORE phản chiếu
+BDD04,calibration,negative,Phố dân cư ban ngày; chỉ có biển vàng; không có đèn giao thông — thử không vẽ nhầm biển
+BDD21,blind,normal,Đầu đèn xanh rõ trên cần treo phía trước; có thêm đèn xa và đèn vàng bên trái
+BDD02,blind,edge;small_far;conflict,Giao lộ phố đông; nhiều đầu đèn xanh ở các khoảng cách; vỏ vàng quay ngang bên phải
+BDD11,blind,edge;negative,Chỉ có đèn người đi bộ (bàn tay đỏ + người đi bộ) bên phải; không có đèn cho xe
+BDD26,blind,critical;low_visibility;conflict,Ban đêm; đèn xanh gần điều khiển xe mình; đèn đi bộ bàn tay cam ngay dưới; đèn đỏ của giao lộ xa hơn
+BDD17,blind,ambiguity;low_visibility;small_far,Mưa trên kính chắn gió; đèn nhỏ ở xa bị nhoè; màu và vị trí khó đọc
