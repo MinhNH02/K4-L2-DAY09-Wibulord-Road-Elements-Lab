@@ -1,6 +1,6 @@
 # Annotation guideline — Trạng thái đèn giao thông + đèn nào điều khiển xe mình
 
-**Version:** v1
+**Version:** v2
 
 Nhóm Wibulord · công cụ CVAT · label `traffic_light` (rectangle) · export **CVAT for images 1.1**.
 
@@ -14,6 +14,10 @@ Từ ngữ dùng trong file:
 - **Đầu đèn:** một vỏ đèn (housing) có 1–5 bóng. Hai vỏ trên cùng một cần treo là hai đầu đèn.
 - **Giao lộ gần nhất:** giao lộ đầu tiên xe mình sẽ đi vào, tức vạch dừng hoặc vạch người đi bộ đầu tiên phía trước.
   Nếu xe mình đã qua vạch dừng thì vẫn là giao lộ đang đi qua.
+- **Thấy mặt đèn:** thấy ít nhất một bóng tròn hoặc mũi tên nằm **trọn trong mặt vỏ**, nhìn gần như thẳng (sáng hay
+  tắt đều được). Chỉ thấy cạnh/lưng vỏ, hoặc chỉ thấy một chấm màu ở **mép** hay **cạnh** vỏ, là đèn quay ngang:
+  không thấy mặt đèn.
+- **Vùng sáng có màu:** phần bóng đèn đang sáng có màu rõ (đỏ/vàng/xanh), **không** tính quầng mờ lan ra xung quanh.
 
 ## 1. Objective + scope
 
@@ -22,8 +26,9 @@ sáng (`state`) và câu trả lời "đèn này có điều khiển xe mình kh
 
 **Trong scope, bắt buộc vẽ:** mọi đầu đèn giao thông cho **xe cơ giới** thoả cả ba điều kiện:
 
-1. thấy **mặt đèn quay về phía xe mình** (thấy bóng đèn tròn hoặc mũi tên, sáng hay tắt đều được);
-2. vỏ đèn cao **≥ 8 px** trong ảnh gốc;
+1. **thấy mặt đèn** quay về phía xe mình (định nghĩa ở trên);
+2. đủ lớn: vỏ đèn cao **≥ 8 px** trong ảnh gốc; nếu không thấy vỏ (ban đêm, nền tối) thì **vùng sáng có màu rộng
+   ≥ 8 px**;
 3. là vật thật, không phải ảnh phản chiếu.
 
 Đầu đèn của giao lộ xa hơn hoặc của đường khác vẫn vẽ, rồi gán `relevance = not_relevant`.
@@ -49,8 +54,10 @@ sáng (`state`) và câu trả lời "đèn này có điều khiển xe mình kh
     khối.
 - **Bị che một phần:** chỉ ôm phần vỏ còn nhìn thấy. Không ước lượng phần bị che.
 - **Bị cắt ở mép ảnh:** box dừng đúng mép ảnh. Box không vượt ra ngoài ảnh.
-- **Không ôm theo quầng sáng:** ban đêm bóng đèn loá rộng hơn vỏ đèn. Box theo vỏ đèn, không theo vùng sáng. Vỏ không
-  nhìn thấy (đêm tối) thì ôm vùng các bóng đèn, cả bóng tắt nếu thấy.
+- **Không ôm theo quầng sáng:** ban đêm bóng đèn loá rộng hơn vỏ đèn. Thấy vỏ thì box theo vỏ đèn.
+- **Không thấy vỏ** (ban đêm, chạng vạng, đèn chìm trong tán cây tối): box ôm **vùng sáng có màu** của bóng đang sáng.
+  Không ước lượng vỏ, không kéo box xuống chỗ các bóng tắt mà mắt không thấy, không ôm quầng. Vùng sáng có màu rộng
+  < 8 px thì không vẽ (mục 1).
 - **Tolerance:** mỗi cạnh box lệch ≤ **3 px** so với mép vỏ đèn là đạt.
 - Mẹo trên CVAT: zoom tới khi đầu đèn cao ít nhất khoảng 1/4 màn hình rồi mới kéo box.
 
@@ -88,7 +95,8 @@ Hai bóng cùng sáng trên một đầu đèn (ví dụ đỏ tròn + mũi tên
 - `circle`: bóng tròn trơn.
 - `arrow_left` / `arrow_right` / `arrow_straight`: bóng mũi tên theo hướng đó.
 - `other`: hình khác của đèn cho xe (mũi tên quay đầu, chữ X…).
-- `unknown`: thấy là mũi tên nhưng không đọc được hướng, hoặc đèn `off` mà không đọc được hình.
+- `unknown`: thấy là mũi tên nhưng không đọc được hướng, hoặc đèn `off` mà không đọc được hình. Không đọc được hình
+  thì chọn `unknown`, **không** chọn `other`.
 
 Đầu đèn tắt (`off`) nhưng vẫn đọc được hình trên mặt kính thì gán theo hình đó.
 
@@ -109,6 +117,11 @@ Trả lời theo thứ tự, dừng ở bước đầu tiên khớp:
 làn xe mình có **mũi tên rẽ bắt buộc nhìn thấy trên mặt đường**, hoặc biển "ONLY" treo trên làn xe mình. Khi đó xe
 mình đi theo hướng mũi tên. Không dùng hành vi xe khác để đoán hướng đi.
 
+**Không suy `relevance` từ vị trí đầu đèn trên ảnh.** Đầu đèn nằm gần giữa khung hình, hay ngay phía trên xe mình,
+**không** có nghĩa là nó điều khiển xe mình. Đầu đèn mũi tên luôn đi qua R3: mũi tên trái chỉ `relevant` khi thấy
+mũi tên rẽ trái sơn trên làn xe mình; không thấy thì `not_relevant`. Gán nhầm mũi tên rẽ là `relevant` là lỗi
+**critical**.
+
 **Đèn nhắc lại:** một giao lộ thường có nhiều đầu đèn cho cùng hướng, trên cần treo và ở góc bên kia giao lộ. Mọi đầu
 đèn đó đều theo R4, tức là `relevant`. Có nhiều đầu đèn `relevant` trong cùng một ảnh là bình thường.
 
@@ -125,10 +138,10 @@ mình đi theo hướng mũi tên. Không dùng hành vi xe khác để đoán h
 
 | Object | Vì sao dễ nhầm |
 |---|---|
-| Đèn quay lưng hoặc quay ngang: chỉ thấy cạnh/lưng vỏ, hoặc chỉ thấy ánh sáng lọt ra từ mép | Vẫn là đèn giao thông nhưng không điều khiển hướng này |
+| Đèn quay lưng hoặc quay ngang: chỉ thấy cạnh/lưng vỏ, hoặc chỉ thấy chấm màu ở mép/cạnh vỏ (không thấy mặt đèn). Không vẽ và **không** escalate | Vẫn là đèn giao thông nhưng không điều khiển hướng này. Hay gặp: vỏ đèn vàng đứng cạnh đầu đèn quay về xe mình |
 | Đèn cho người đi bộ (hình người, bàn tay, đếm ngược) | Cùng màu đỏ/xanh |
 | Đèn cho xe đạp, đèn đường sắt, đèn chớp cảnh báo trên biển báo | Không thuộc scope |
-| Đầu đèn có vỏ cao < 8 px, hoặc chỉ là một chấm màu không thấy vỏ | Không đủ để khẳng định là đèn, không đo được geometry |
+| Đầu đèn có vỏ cao < 8 px; hoặc không thấy vỏ và vùng sáng có màu rộng < 8 px | Không đủ để khẳng định là đèn, không đo được geometry |
 | Ảnh phản chiếu của đèn trên kính chắn gió, nắp capo, mặt đường ướt, cửa kính | Không phải vật thật |
 | Đèn hậu, đèn phanh, xi-nhan của xe | Đỏ/vàng giống đèn giao thông |
 | Đèn đường, đèn trần hầm, đèn biển hiệu, đèn trang trí | Là nguồn sáng tròn |
@@ -145,7 +158,9 @@ mình đi theo hướng mũi tên. Không dùng hành vi xe khác để đoán h
 | Nhỏ/xa, cao ≥ 8 px, không đọc được màu | Vẽ, `state = unknown` |
 | Vỏ cao < 8 px | Không vẽ |
 | Loá nắng, cháy sáng | Dùng quy tắc vị trí (mục 4.1). Không thấy vị trí thì `state = unknown` |
-| Ban đêm, vỏ đèn chìm trong tối | Box theo vùng bóng đèn (mục 3). Màu theo bóng sáng |
+| Ban đêm/chạng vạng/tán cây tối, không thấy vỏ, vùng sáng có màu ≥ 8 px | Vẽ, box ôm vùng sáng có màu (mục 3). Màu theo bóng sáng. **Không** escalate |
+| Không thấy vỏ, vùng sáng có màu < 8 px | Không vẽ |
+| Đầu đèn tắt hẳn (thấy mặt đèn, không bóng nào sáng) | Vẽ, `state = off`. Vỏ tối trên nền tối dễ bỏ sót: zoom quét kỹ |
 | Ảnh mờ do chuyển động / mưa / kính bẩn | Như dòng "nhỏ/xa": đọc được thì gán, không thì `unknown` |
 | Ảnh phản chiếu | Không vẽ |
 
@@ -160,7 +175,11 @@ Mỗi quyết định phải **nhìn thấy được trong file export**:
 | **UNKNOWN** | **Ảnh** không đủ bằng chứng: loá, mờ, tối, không thấy vạch làn | Box có `state`, `pictogram` hoặc `relevance` = `unknown`; `escalate = false` |
 | **ESCALATE** | Nhìn **rõ** nhưng **guideline** không có rule, hoặc hai rule cho hai kết quả khác nhau | Box có `escalate = true`; attribute nào quyết được thì điền, còn lại `unknown` |
 
-Phân biệt: **UNKNOWN là lỗi của ảnh, ESCALATE là lỗi của guideline.** Không bật `escalate` chỉ vì ảnh mờ.
+Phân biệt: **UNKNOWN là lỗi của ảnh, ESCALATE là lỗi của guideline.** Không bật `escalate` chỉ vì ảnh mờ, và không
+bật `escalate` kèm theo mỗi giá trị `unknown`: chọn `unknown` là đã đủ.
+
+**Chỉ** bật `escalate` cho các ca dưới đây. Ca nào đã có rule trong file này (đèn quay ngang, đèn nhỏ, đèn ban đêm
+không thấy vỏ, đèn tắt…) thì làm theo rule, không escalate.
 
 Các ca phải ESCALATE:
 
@@ -174,7 +193,8 @@ version guideline.
 
 **Thứ tự quyết định nhanh cho mỗi nguồn sáng/vật trong ảnh:**
 
-1. Có phải đầu đèn giao thông cho xe, quay mặt về xe mình, cao ≥ 8 px, không phải phản chiếu? Không → IGNORE.
+1. Có phải đầu đèn giao thông cho xe, **thấy mặt đèn**, đủ lớn (vỏ ≥ 8 px, hoặc vùng sáng có màu ≥ 8 px khi không
+   thấy vỏ), không phải phản chiếu? Không → IGNORE.
 2. Vẽ box theo mục 3.
 3. Chọn `state` (mục 4.1), rồi `pictogram` (mục 4.2).
 4. Chọn `relevance` theo R0–R5 (mục 4.3).
@@ -187,7 +207,8 @@ nhãn độc lập: **không** dùng frame trước/sau hay nhịp đèn để s
 
 ## 9. Examples
 
-Ảnh ví dụ thuộc split `example`. Kích thước ảnh LISA 1280×960, BDD 1280×720; toạ độ ghi dạng xấp xỉ.
+Ảnh ví dụ thuộc split `example` hoặc `calibration`. Kích thước ảnh LISA 1280×960, BDD 1280×720; toạ độ ghi dạng xấp
+xỉ.
 
 | sample_id | Thấy gì | Expected output | Rule áp dụng |
 |---|---|---|---|
@@ -198,6 +219,11 @@ nhãn độc lập: **không** dùng frame trước/sau hay nhịp đèn để s
 | LISA01 | Biển báo cạnh đầu mũi tên, đèn pha các xe ngược chiều | Không vẽ | Mục 2, mục 5 |
 | LISA20 | Cùng giao lộ. Đầu mũi tên trái vẫn **đỏ**; đầu đèn tròn giữa, đầu đèn tròn bên phải và 2 đầu đèn xa đã **xanh** (trông xanh ngọc) | Mũi tên: `red`, `arrow_left`, `not_relevant`. 4 đầu đèn tròn: `green`, `circle`, `relevant` | R3, R4. 4.1: xanh ngọc = `green`. Trong cùng ảnh có thể có đèn đỏ `not_relevant` và đèn xanh `relevant` |
 | BDD16 | Xe đi dưới cầu vượt: đèn trần tròn sáng ở góc trên phải, đèn hậu đỏ của xe phía trước, vệt đỏ phản chiếu trên nắp capo, biển tròn màu cam phía xa | Không có box nào | Mục 5: đèn trần, đèn hậu, ảnh phản chiếu, biển báo đều IGNORE. Ảnh không có đèn giao thông là hợp lệ |
+| LISA16 | Frame vừa chuyển pha: đầu đèn xa bên trái (x≈678–689, y≈359–386) **tắt hẳn**, chỉ thấy vỏ tối; mũi tên trái vẫn đỏ; các đầu đèn tròn khác đã xanh | Đầu đèn xa bên trái: `off`, `unknown`, `relevant`. Mũi tên: `red`, `arrow_left`, `not_relevant` | 4.1: thấy mặt đèn, không bóng nào sáng → `off`. 4.2: không đọc được hình → `unknown`, không phải `other`. R3 |
+| LISA16 | Đầu đèn tròn bên phải chìm trong tán cây tối, chỉ thấy bóng xanh sáng (x≈1146–1163, y≈229–253) | `green`, `circle`, `relevant`; box ôm vùng sáng có màu | Mục 3: không thấy vỏ → box ôm vùng sáng, không ước lượng vỏ |
+| BDD07 | Mỗi bên đường có một cặp vỏ vàng: vỏ quay về xe mình sáng **xanh** (x≈230–241 và x≈679–689), vỏ ngay cạnh quay ngang, chỉ thấy cạnh vỏ | 2 box: `green`, `circle`, `relevant`. Hai vỏ quay ngang: không vẽ. Hai đầu đèn rất xa (x≈490 và x≈600) không thấy mặt đèn: không vẽ | Định nghĩa "thấy mặt đèn". Mục 5: đèn quay ngang IGNORE, không escalate. R4 đèn nhắc lại |
+| BDD25 | Chạng vạng, không thấy vỏ; 3 bóng xanh ở giao lộ phía trước, vùng sáng có màu rộng khoảng 10 px | 3 box ôm vùng sáng: `green`, `circle`, `relevant`; không escalate | Mục 1, mục 3: không thấy vỏ nhưng vùng sáng ≥ 8 px → vẽ |
+| BDD18 | Ban đêm; cuối đường có 2 chấm xanh rất xa (vùng sáng khoảng 7 px); sát phải là đèn đi bộ đỏ/trắng | Không có box nào | Mục 5: vùng sáng < 8 px → không vẽ; đèn người đi bộ → không vẽ |
 
 ## 10. Common mistakes
 
@@ -205,14 +231,15 @@ nhãn độc lập: **không** dùng frame trước/sau hay nhịp đèn để s
 |---|---|---|
 | Gán `yellow` cho đèn đỏ vì trên ảnh trông cam | **Critical**: xe có thể không dừng | Dùng quy tắc vị trí: bóng trên cùng là `red` |
 | Gán `not_relevant` hoặc bỏ sót đầu đèn điều khiển xe mình | **Critical**: xe có thể vượt đèn đỏ | Chạy R0–R5 cho từng box. Nhớ các đèn nhắc lại ở góc bên kia giao lộ |
-| Gán mũi tên rẽ là `relevant` khi không có mũi tên rẽ bắt buộc trên làn xe mình | Xe dừng/đi sai | Mặc định xe mình đi thẳng (mục 4.3) |
+| Gán mũi tên rẽ là `relevant` vì đầu đèn nằm gần giữa ảnh / ngay trên xe mình | **Critical**: xe đi/dừng theo đèn rẽ | Không suy relevance từ vị trí trên ảnh. Mặc định xe mình đi thẳng (mục 4.3) |
 | Một box bao cả cần treo có 2 đầu đèn | Sai số object, sai relevance | 1 vỏ = 1 box |
 | Box theo quầng sáng ban đêm, hoặc lấy cả cột/biển | Sai geometry | Box theo vỏ đèn, tolerance 3 px |
-| Vẽ đèn quay ngang/quay lưng, đèn người đi bộ, ảnh phản chiếu | Nhiễu dữ liệu | Kiểm tra danh sách IGNORE mục 5 |
-| Bỏ sót đèn nhỏ ở xa | Thiếu object | Zoom quét cả ảnh, nhất là quanh giao lộ và phía xa |
+| Vẽ đèn quay ngang/quay lưng (vỏ vàng cạnh đầu đèn, chấm màu ở mép vỏ), đèn người đi bộ, ảnh phản chiếu | Nhiễu dữ liệu | Kiểm tra "thấy mặt đèn" và danh sách IGNORE mục 5 |
+| Bỏ sót đèn nhỏ ở xa, đèn chìm trong tán cây tối, đầu đèn đang tắt | Thiếu object | Zoom quét cả ảnh, nhất là quanh giao lộ, phía xa và vùng tối |
 | Đoán màu khi ảnh loá, hoặc dùng frame LISA trước/sau để suy ra màu | Nhãn sai mà trông như đúng | Không thấy màu và vị trí thì `unknown`; mỗi ảnh độc lập |
-| Bật `escalate` cho ảnh mờ, hoặc chọn `unknown` khi guideline không có rule | Trộn hai loại quyết định | UNKNOWN = ảnh thiếu bằng chứng; ESCALATE = guideline thiếu rule |
-| Để attribute `__undefined__` | Không chấm được | Kiểm tra mọi box trước khi export |
+| Bật `escalate` cho ảnh mờ, bật kèm mỗi `unknown`, hoặc bật cho ca đã có rule | Trộn hai loại quyết định, escalate mất tác dụng | UNKNOWN = ảnh thiếu bằng chứng; ESCALATE chỉ cho danh sách ở mục 7 |
+| Để attribute `__undefined__` (hay gặp nhất: quên `relevance` ở box cuối cùng vẽ) | Không chấm được | Mở lại từng box trong sidebar trước khi export |
 
-**Tự kiểm trước khi export:** đã quét hết ảnh ở mức zoom lớn? Mỗi đầu đèn đúng 1 box? Không box nào còn
-`__undefined__`? Mọi đèn đỏ đã kiểm theo vị trí bóng? Mọi box đã qua R0–R5?
+**Tự kiểm trước khi export:** đã quét hết ảnh ở mức zoom lớn, cả vùng tối? Mỗi đầu đèn đúng 1 box? Không box nào còn
+`__undefined__`? Mọi đèn đỏ đã kiểm theo vị trí bóng? Mọi box đã qua R0–R5, và mọi mũi tên đã qua R3? `escalate`
+chỉ bật cho ca trong danh sách mục 7?

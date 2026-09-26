@@ -33,7 +33,7 @@ placeholder mới là xong (gate G2).
 - **Phiên bản CVAT** (`make cvat-status`): CVAT 2.75.1 tại http://localhost:8080
 - **Tên task calibration** (có version guideline, ví dụ `team07-calib-v1`): `wibulord-calib-v1-<tên bạn>` (mỗi người
   một task, ví dụ `wibulord-calib-v1-minh`)
-- **Guide của task đã dán `02_guideline.md`?** chưa
+- **Guide của task đã dán `02_guideline.md`?** chưa (task `wibulord-calib-v1-minh` chưa có Guide; dán bản v2 trước khi làm tiếp)
 - **Nhóm dùng Track hay Shape, vì sao:** Shape. Task ảnh tĩnh, mỗi ảnh gán nhãn độc lập (guideline mục 8), kể cả các
   frame LISA liên tiếp; Track sẽ kéo attribute từ frame trước sang frame sau, trái với rule "không suy ra từ frame
   khác".
@@ -43,5 +43,16 @@ placeholder mới là xong (gate G2).
 Một thành viên **chưa tham gia setup** mở task và trả lời: label gì, dùng tool nào, gán attribute nào, khi nào
 escalate. Ghi lại ai test và chỗ họ vấp:
 
-TODO — chưa test. Sau khi CVAT owner tạo task, một bạn chưa setup mở task, trả lời 4 câu trên, ghi tên người test và
-chỗ vấp vào đây.
+Đã test. Các thành viên không phải CVAT owner (hau, theanh, hoang, minh) tự tạo task `wibulord-calib-v1-<tên>` từ
+`03_cvat_labels.json` + Guide v1, vẽ và export độc lập. Bằng chứng lấy từ 5 file export trong `06_calibration_exports/`:
+
+| Câu hỏi | Kết quả | Chỗ vấp |
+|---|---|---|
+| Label gì? | Cả 5 export chỉ có label `traffic_light` | Không |
+| Dùng tool nào? | Cả 5 dùng rectangle Shape, không ai dùng Track | Không |
+| Gán attribute nào? | Cả 5 gán đủ 4 attribute; còn 1 box sót `relevance = __undefined__` (hau, BDD07) | Quên chọn attribute ở box cuối; lần export đầu của hau rỗng vì chưa lưu (Ctrl+S) trước khi export |
+| Khi nào escalate? | Số box bật `escalate` mỗi người từ 0 đến 8 | **Vấp nhiều nhất:** trộn `escalate` với `unknown`, escalate cả ca đã có rule (đèn quay ngang, đèn nhỏ) |
+
+Đã sửa trong guideline v2: mục 7 giới hạn `escalate` vào danh sách cố định, checklist mục 10 thêm "mở lại từng box" và
+"escalate chỉ cho ca mục 7". Hướng dẫn thao tác CVAT cho nhóm (`HUONG-DAN-CVAT-CALIBRATION.html`) nhắc Ctrl+S trước
+export.

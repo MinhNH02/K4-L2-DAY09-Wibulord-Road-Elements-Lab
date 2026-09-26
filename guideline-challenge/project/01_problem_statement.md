@@ -25,7 +25,7 @@ chỉ có một ảnh tĩnh nên không biết chắc xe mình định đi thẳ
 ## Scope
 
 - **Trong scope (bắt buộc label):** mọi đầu đèn giao thông cho xe, nhìn thấy mặt đèn quay về phía xe mình, vỏ đèn cao
-  ≥ 8 px. Gồm cả đèn của giao lộ xa hơn (gán `not_relevant`).
+  ≥ 8 px (không thấy vỏ thì vùng sáng có màu ≥ 8 px). Gồm cả đèn của giao lộ xa hơn (gán `not_relevant`).
 - **Ngoài scope (ignore):** đèn quay lưng/quay ngang (chỉ thấy vỏ, không thấy mặt đèn), đèn cho người đi bộ, đèn chớp
   cảnh báo trên biển báo, đèn đường ray, đèn phản chiếu trên kính/xe, đèn cao < 8 px.
 - **Geometry tolerance:** box ôm phần vỏ đèn nhìn thấy, không lấy cột, cần treo hay biển kèm theo. Mỗi cạnh lệch

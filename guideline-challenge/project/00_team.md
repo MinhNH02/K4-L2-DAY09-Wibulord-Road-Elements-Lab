@@ -10,11 +10,11 @@
 
 | Thành viên | Vai trò chính | File phụ trách |
 |---|---|---|
-| Hồ Minh Hậu (2A202602058) | TODO | spec owner | `01_problem_statement.md`, `02_guideline.md` |
-| Trần Tuấn Anh (2A202602110) | TODO | CVAT owner | `03_ontology_and_cvat_setup.md`, `03_cvat_labels.json`, `sample_pack.csv`, `09_cvat_export_or_task_reference.txt` |
-| Nguyễn Thế Anh (2A202602138) | TODO | gold owner (người duy nhất chạy `freeze`) | `04_edge_cases/` |
-| Bùi Thanh Minh Hoàng (2A202602054) | TODO | QA owner | `05_qa_plan.md`, `06_calibration_report.csv` |
-| Nguyễn Hải Minh (2A202602074) | TODO | handoff owner | `07_blind_handoff/`, `08_revision_log.md` |
+| Hồ Minh Hậu (2A202602058) | spec owner | `01_problem_statement.md`, `02_guideline.md` |
+| Trần Tuấn Anh (2A202602110) | CVAT owner | `03_ontology_and_cvat_setup.md`, `03_cvat_labels.json`, `sample_pack.csv`, `09_cvat_export_or_task_reference.txt` |
+| Nguyễn Thế Anh (2A202602138) | gold owner (người duy nhất chạy `freeze`) | `04_edge_cases/` |
+| Bùi Thanh Minh Hoàng (2A202602054) | QA owner | `05_qa_plan.md`, `06_calibration_report.csv` |
+| Nguyễn Hải Minh (2A202602074) | handoff owner | `07_blind_handoff/`, `08_revision_log.md` |
 
 Gợi ý chia vai (nhóm 2–3 người thì gộp): **spec owner** (`01`, `02`), **CVAT owner** (`03_*`, `sample_pack.csv`,
 `09`), **gold owner** (`04_edge_cases/`), **QA owner** (`05`, `06`, `07_blind_handoff/`). Mỗi file một người sửa
