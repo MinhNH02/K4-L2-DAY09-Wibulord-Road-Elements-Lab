@@ -3,8 +3,8 @@
 Điền trước phút 15. Thay mọi placeholder; còn sót thì `make status` báo ở gate G1.
 
 - **Team:** Wibulord
-- **Nhóm peer test bài của mình:** TODO (cặp A ↔ B; số nhóm lẻ thì ring 3 nhóm A → B → C → A — Lab Coach công bố)
-- **Nhóm mình test bài của:** TODO
+- **Nhóm peer test bài của mình:** VinNo (cặp Wibulord ↔ VinNo) — https://github.com/JackSkyVN/K4-L2-Day09-VinNo-RoadElements-Lab-Student
+- **Nhóm mình test bài của:** VinNo (lane boundary)
 - **Problem family:** Traffic light: trạng thái đèn (`state`) + đèn có điều khiển xe mình không (`relevance`) tại giao lộ nhiều đầu đèn
 - **Nguồn ảnh:** `bdd100k` (ảnh có đèn, gồm đêm và chạng vạng), `lisa` (clip dayClip5, 30 frame)
 
