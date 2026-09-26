@@ -68,7 +68,7 @@ Sample: BDD25
 Scene: Đại lộ đô thị lúc chạng vạng, mặt đường ướt
 Observation: 3 bóng xanh ở giao lộ phía trước, không thấy vỏ; vùng sáng có màu rộng khoảng 10 px
 Decision: LABEL (v1: ESCALATE vì mục 3 và mục 5 mâu thuẫn; v2 đã có rule)
-Expected: 3 box ôm vùng sáng có màu: green; circle; relevant; escalate=false
+Expected: 3 box ôm vùng sáng có màu: green; circle; relevant; lamp_only=true; escalate=false
 Rationale: Rule v2: không thấy vỏ thì vẽ khi vùng sáng có màu ≥ 8 px. Đèn xanh relevant bị bỏ sót làm model yếu ở cảnh chạng vạng
 Common mistake: Bỏ qua vì không thấy vỏ, hoặc ôm cả quầng sáng. Calibration: người vẽ 0, người vẽ 1, người vẽ 3 box
 Diversity: low_visibility · escalation (đường escalate đã dẫn tới rule mới)
@@ -104,7 +104,7 @@ Sample: LISA08 (lặp lại ở LISA16)
 Scene: Đầu đèn tròn trên cần treo bên phải, nền là tán cây tối
 Observation: Không thấy vỏ, chỉ thấy bóng đỏ (LISA08, x≈1147–1166, y≈189–213) hoặc bóng xanh (LISA16, x≈1146–1163, y≈229–253)
 Decision: LABEL
-Expected: Box ôm vùng sáng có màu; state theo màu; circle; relevant
+Expected: Box ôm vùng sáng có màu; state theo màu (không dùng quy tắc vị trí); circle; relevant; lamp_only=true
 Rationale: Rule v2 mục 3: không ước lượng vỏ, không ôm quầng. Box to nhỏ khác nhau làm geometry không chấm được
 Common mistake: Bỏ sót đèn trong vùng tối, hoặc kéo box ước lượng cả vỏ. Calibration: 2 người bỏ sót, 3 box lệch nhau tới 40 px
 Diversity: occlusion · low_visibility

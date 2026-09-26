@@ -53,6 +53,15 @@
         "values": [
           "false"
         ]
+      },
+      {
+        "name": "lamp_only",
+        "mutable": false,
+        "input_type": "checkbox",
+        "default_value": "false",
+        "values": [
+          "false"
+        ]
       }
     ]
   }

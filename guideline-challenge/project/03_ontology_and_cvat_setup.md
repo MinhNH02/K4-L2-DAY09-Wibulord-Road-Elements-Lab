@@ -12,6 +12,7 @@ placeholder mới là xong (gate G2).
 | `pictogram` | — | attribute của `traffic_light` (select) | `circle`, `arrow_left`, `arrow_right`, `arrow_straight`, `other`, `unknown` | `__undefined__` | Không (ảnh tĩnh) | Hình bóng đang sáng. Cần để suy ra `relevance` (mũi tên rẽ khác hướng xe mình → `not_relevant`, rule R3) |
 | `relevance` | — | attribute của `traffic_light` (select) | `relevant`, `not_relevant`, `unknown` | `__undefined__` | Không (ảnh tĩnh) | Đèn có điều khiển xe mình không, theo R0–R5 của guideline. Là decision `critical` chính |
 | `escalate` | — | attribute của `traffic_light` (checkbox) | `true`, `false` | `false` | Không (ảnh tĩnh) | Thể hiện quyết định ESCALATE (guideline thiếu rule) trong file export, tách khỏi UNKNOWN (ảnh thiếu bằng chứng) |
+| `lamp_only` | — | attribute của `traffic_light` (checkbox) | `true`, `false` | `false` | Không (ảnh tĩnh) | `true` khi không thấy vỏ và box chỉ ôm vùng sáng của bóng (guideline mục 6.1). Box ôm bóng nhỏ hơn box ôm vỏ khoảng 3 lần; cờ này cho downstream tách hai loại box khi train và khi chấm geometry |
 
 ## Class hay attribute
 
@@ -27,6 +28,10 @@ placeholder mới là xong (gate G2).
   Riêng `escalate` default `false` là có rủi ro: người vẽ quên tích thì ca mơ hồ bị giấu. Checklist cuối guideline
   (mục 10) có câu kiểm cho việc này.
 - Đèn người đi bộ, xe đạp **không** có class riêng vì nằm ngoài scope (guideline mục 5). Không vẽ gì cho chúng.
+- **`lamp_only` là checkbox mặc định `false`**, không phải `housing_visible` mặc định `true`: phần lớn box thấy vỏ, nên
+  chỉ tích ở số ít box không thấy vỏ. Nếu đảo lại, gần như box nào cũng phải tích và quên tích sẽ sai hàng loạt. Rủi ro
+  còn lại là quên tích ở box không thấy vỏ; checklist mục 10 có câu kiểm. Attribute này thêm sau calibration (5 export
+  calibration chưa có nó); task mới phải tạo lại với `03_cvat_labels.json` bản hiện tại.
 
 ## CVAT
 

@@ -15,7 +15,7 @@ chỉ có một ảnh tĩnh nên không biết chắc xe mình định đi thẳ
    dùng để train và đánh giá model phát hiện đèn + phân loại `state` + `relevance`.
 2. **Output annotation nào thực sự cần?** Box `traffic_light` cho từng đầu đèn quay về phía xe mình; attribute
    `state` (red / yellow / green / off / unknown), `relevance` (relevant / not_relevant / unknown), `pictogram` (tròn hay
-   mũi tên hướng nào, để suy ra relevance) và cờ `escalate`.
+   mũi tên hướng nào, để suy ra relevance), cờ `escalate` và cờ `lamp_only` (box chỉ ôm bóng đèn vì không thấy vỏ).
 3. **Failure nào gây hậu quả lớn nhất?** Đèn **relevant** bị bỏ sót, bị gán `not_relevant`, hoặc sai `state` giữa đỏ
    và xanh: xe có thể vượt đèn đỏ. Đây là các decision `critical` trong gold.
 4. **Khi ambiguity không resolve được, ai / ở đâu là escalation path?** Annotator bật `escalate = true` trên box, ghi
